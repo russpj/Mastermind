@@ -96,17 +96,21 @@ def play_as_player(board, debug):
     board.code = code
 
     num_right = 0
+    count_guess = 0
     while num_right != board.num_dots:
         guess_is_valid = False
         while not guess_is_valid:
             guess_string = input("What is your guess? ")
             guess = list(guess_string.upper())
+            count_guess += 1
             guess_is_valid = True
             for color in guess:
                 if color not in board.colors:
                     print(f"{color} is not a valid color")
                     guess_is_valid = False
-
+        num_right, num_almost_right = score_guess(guess, board.code)
+        print(f"Guess: {guess}, Score: {num_right}, {num_almost_right}")
+    print(f"Congratulations. You solved it in {count_guess} guesses.")
 
     return
 
