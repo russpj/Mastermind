@@ -20,6 +20,30 @@ standard_colors = [
     "W"
 ]
 
+class Score:
+    def __init__(self, num_right, num_almost_right):
+        self.num_right = num_right
+        self.num_almost_right = num_almost_right
+        return
+
+    
+class Guess:
+    def __init__(self, colors):
+        self.colors = colors
+        return
+
+class Board:
+    def __init__(self, num_colors, num_dots):
+        self.num_colors = num_colors
+        self.num_dots = num_dots
+        self.guesses = []
+        self.scores = []
+        self.candidates = self.compute_valid_candidates()
+        return
+    
+    def compute_valid_candidates(self):
+        return set()
+    
 
 def main(arguments):
     program_name = app_name
@@ -68,9 +92,12 @@ def main(arguments):
         colors = standard_colors[:num_colors]
     else:
         colors = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")[:num_colors]
-
     if verbose:
         print(f'The colors are {colors}')
+
+    board = Board(num_colors, num_dots)
+    if verbose:
+        print(f'The board has {len(board.candidates)} candidates.')
     time_end = process_time()
     print(f'Time taken: {time_end - time_start} seconds.')
 
