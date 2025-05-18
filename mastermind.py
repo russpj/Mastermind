@@ -7,6 +7,7 @@
 from sys import stdin, stdout, stderr, argv
 from getopt import getopt, GetoptError
 from time import process_time
+from random import randint
 
 
 app_name = 'mastermind.py'
@@ -61,12 +62,46 @@ class Board:
         self.guesses = []
         self.scores = []
         self.code = []
-        self.candidates = self.compute_valid_candidates()
+        if num_colors <= 6:
+            self.colors = standard_colors[:num_colors]
+        else:
+            self.colors = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")[:num_colors]
+        return
+    
+
+class Solver:
+    def __init__(self, board):
+        self.board = board
+        self.compute_valid_candidates()
         return
     
     def compute_valid_candidates(self):
-        return set()
+        self.candidates = set()
+        return
     
+
+def play_as_player(board, debug):
+    print('How about a nice game of Mastermind?')
+    print(f"I'm thinking of {board.num_dots} dots made up of {board.num_colors} colors.")
+    print("You can use the letters ", end='')
+    for color in board.colors:
+        print(color, end='')
+    print(" for your guesses.")
+
+    code = []
+    for _ in range(board.num_dots):
+        code.append(board.colors[randint(0,board.num_colors-1)])
+    if debug:
+        print(f'The secret code is {code}')
+
+    num_right = 0
+    while num_right != board.num_dots:
+        guess_string = input("What is your guess ")
+        guess = list(guess_string)
+        if debug:
+            print(f"I think your guess was {guess}")
+
+    return
 
 def main(arguments):
     program_name = app_name
@@ -111,17 +146,13 @@ def main(arguments):
 
     time_start = process_time()
     print(f'{player} will play with {num_dots} dots of {num_colors} colors.')
-    if num_colors <= 6:
-        colors = standard_colors[:num_colors]
-    else:
-        colors = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")[:num_colors]
-    if verbose:
-        print(f'The colors are {colors}')
 
     board = Board(num_colors, num_dots)
     if verbose:
-        print(f'The board has {len(board.candidates)} candidates.')
         print(f"The test score is {score_guess(['W', 'B', 'W', 'B'], ['R', 'W', 'B', 'P'])}")
+        print(f'The colors are {board.colors}')
+    if player == 'P':
+        play_as_player(board, verbose)
     time_end = process_time()
     print(f'Time taken: {time_end - time_start} seconds.')
 
