@@ -93,13 +93,20 @@ def play_as_player(board, debug):
         code.append(board.colors[randint(0,board.num_colors-1)])
     if debug:
         print(f'The secret code is {code}')
+    board.code = code
 
     num_right = 0
     while num_right != board.num_dots:
-        guess_string = input("What is your guess ")
-        guess = list(guess_string)
-        if debug:
-            print(f"I think your guess was {guess}")
+        guess_is_valid = False
+        while not guess_is_valid:
+            guess_string = input("What is your guess? ")
+            guess = list(guess_string.upper())
+            guess_is_valid = True
+            for color in guess:
+                if color not in board.colors:
+                    print(f"{color} is not a valid color")
+                    guess_is_valid = False
+
 
     return
 
