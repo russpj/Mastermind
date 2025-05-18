@@ -31,6 +31,28 @@ class Guess:
     def __init__(self, colors):
         self.colors = colors
         return
+    
+def score_guess(guess, code):
+    if len(guess) != len(code):
+        return
+    num_right = 0
+    num_almost_right = 0
+    dot_guess_used = [False]*len(guess)
+    dot_code_used = [False]*len(code)
+    for index in range(len(guess)):
+        if guess[index] == code[index]:
+            num_right += 1
+            dot_guess_used[index] = True
+            dot_code_used[index] = True
+    for guess_index in range(len(guess)):
+        for code_index in range(len(code)):
+            if not dot_guess_used[guess_index] and not dot_code_used[code_index]:
+                if guess[guess_index] == code[code_index]:
+                    num_almost_right += 1
+                    dot_guess_used[guess_index] = True
+                    dot_code_used[code_index] = True
+    return (num_right, num_almost_right)
+
 
 class Board:
     def __init__(self, num_colors, num_dots):
@@ -38,6 +60,7 @@ class Board:
         self.num_dots = num_dots
         self.guesses = []
         self.scores = []
+        self.code = []
         self.candidates = self.compute_valid_candidates()
         return
     
@@ -98,6 +121,7 @@ def main(arguments):
     board = Board(num_colors, num_dots)
     if verbose:
         print(f'The board has {len(board.candidates)} candidates.')
+        print(f"The test score is {score_guess(['W', 'B', 'W', 'B'], ['R', 'W', 'B', 'P'])}")
     time_end = process_time()
     print(f'Time taken: {time_end - time_start} seconds.')
 
