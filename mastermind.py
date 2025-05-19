@@ -109,7 +109,7 @@ def play_as_player(board, debug):
                     print(f"{color} is not a valid color")
                     guess_is_valid = False
         num_right, num_almost_right = score_guess(guess, board.code)
-        print(f"Guess: {guess}, Score: {num_right}, {num_almost_right}")
+        print(f"Guess: {''.join(guess)}, Score: {num_right}, {num_almost_right}")
     print(f"Congratulations. You solved it in {count_guess} guesses.")
 
     return
