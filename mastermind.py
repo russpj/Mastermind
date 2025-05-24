@@ -38,27 +38,27 @@ def score_guess(guess, code):
         return
     num_right = 0
     num_almost_right = 0
-    dot_guess_used = [False]*len(guess)
-    dot_code_used = [False]*len(code)
+    spot_guess_used = [False]*len(guess)
+    spot_code_used = [False]*len(code)
     for index in range(len(guess)):
         if guess[index] == code[index]:
             num_right += 1
-            dot_guess_used[index] = True
-            dot_code_used[index] = True
+            spot_guess_used[index] = True
+            spot_code_used[index] = True
     for guess_index in range(len(guess)):
         for code_index in range(len(code)):
-            if not dot_guess_used[guess_index] and not dot_code_used[code_index]:
+            if not spot_guess_used[guess_index] and not spot_code_used[code_index]:
                 if guess[guess_index] == code[code_index]:
                     num_almost_right += 1
-                    dot_guess_used[guess_index] = True
-                    dot_code_used[code_index] = True
+                    spot_guess_used[guess_index] = True
+                    spot_code_used[code_index] = True
     return (num_right, num_almost_right)
 
 
 class Board:
-    def __init__(self, num_colors, num_dots):
+    def __init__(self, num_colors, num_spots):
         self.num_colors = num_colors
-        self.num_dots = num_dots
+        self.num_spots = num_spots
         self.guesses = []
         self.scores = []
         self.code = []
@@ -82,14 +82,14 @@ class Solver:
 
 def play_as_player(board, debug):
     print('How about a nice game of Mastermind?')
-    print(f"I'm thinking of {board.num_dots} dots made up of {board.num_colors} colors.")
+    print(f"I'm thinking of {board.num_spots} spots made up of {board.num_colors} colors.")
     print("You can use the letters ", end='')
     for color in board.colors:
         print(color, end='')
     print(" for your guesses.")
 
     code = []
-    for _ in range(board.num_dots):
+    for _ in range(board.num_spots):
         code.append(board.colors[randint(0,board.num_colors-1)])
     if debug:
         print(f'The secret code is {code}')
@@ -97,7 +97,7 @@ def play_as_player(board, debug):
 
     num_right = 0
     count_guess = 0
-    while num_right != board.num_dots:
+    while num_right != board.num_spots:
         guess_is_valid = False
         while not guess_is_valid:
             guess_string = input("What is your guess? ")
@@ -116,17 +116,17 @@ def play_as_player(board, debug):
 
 def main(arguments):
     program_name = app_name
-    command_line_documentation = f'{program_name} --help --verbose --player [Person|Computer] --colors num_colors --dots num_dots'
+    command_line_documentation = f'{program_name} --help --verbose --player [Person|Computer] --colors num_colors --spots num_spots'
     verbose = False
     player = 'P'
     num_colors = 6
-    num_dots = 4
+    num_spots = 4
     input_file_name = ''
     sections = []
 
     try:
         opts, args = getopt(arguments, "hvp:c:d:", 
-                            ("help", "verbose", "player=", "colors=", "dots="))
+                            ("help", "verbose", "player=", "colors=", "spots="))
     except GetoptError:
         print(f'Invalid Arguments: {command_line_documentation}')
         exit(2)
@@ -148,17 +148,17 @@ def main(arguments):
             if num_colors > 26:
                 num_colors = 26
 
-        if opt in ('-d', '--dots'):
-            num_dots = int(arg)
+        if opt in ('-d', '--spots'):
+            num_spots = int(arg)
 
     if input_file_name:
         with open(input_file_name, 'r') as input_file:
             print(f'Opened {input_file_name} for {app_name}')
 
     time_start = process_time()
-    print(f'{player} will play with {num_dots} dots of {num_colors} colors.')
+    print(f'{player} will play with {num_spots} spots of {num_colors} colors.')
 
-    board = Board(num_colors, num_dots)
+    board = Board(num_colors, num_spots)
     if verbose:
         print(f"The test score is {score_guess(['W', 'B', 'W', 'B'], ['R', 'W', 'B', 'P'])}")
         print(f'The colors are {board.colors}')
