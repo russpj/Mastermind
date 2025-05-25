@@ -101,9 +101,12 @@ class Solver:
         return None
     
     def remove_candidates(self, guess, score):
+        removals = set()
         for candidate in self.candidates:
             if  score_guess(guess, candidate) != score:
-                self.candidates.remove(candidate)
+                removals.add(candidate)
+        for candidate in removals:
+            self.candidates.remove(candidate)
     
 
 def play_as_player(board, debug):
