@@ -7,7 +7,7 @@
 from sys import stdin, stdout, stderr, argv
 from getopt import getopt, GetoptError
 from time import process_time
-from random import randint
+from random import randint, choice
 
 
 app_name = 'mastermind.py'
@@ -67,6 +67,21 @@ class Board:
         else:
             self.colors = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")[:num_colors]
         return
+
+    def codes(self):
+        num_spots = self.num_spots
+        num_colors = self.num_colors
+        indices = [0]*num_spots
+        while True:
+            yield tuple([self.colors[indices[i]] for i in range(num_spots)])
+            for index_position in [num_spots-i-1 for i in range(num_spots)]:
+                indices[index_position] += 1
+                if indices[index_position] < num_colors:
+                    break
+                indices[index_position] = 0
+            if indices == [0]*num_spots:
+                return
+
     
 
 class Solver:
@@ -77,12 +92,12 @@ class Solver:
     
     def compute_valid_candidates(self):
         self.candidates = set()
+        self.candidates = {code for code in self.board.codes()}
         return
 
     def guess(self):
         if self.candidates:
-            guess_index = randint[0, len(self.candidates)-1]
-            return self.candidates[guess_index]
+            return choice(list(self.candidates))
         return None
     
     def remove_candidates(self, guess, score):
@@ -134,8 +149,8 @@ def play_as_computer(board, debug):
             print(f'Out of {len(solver.candidates)} candidates ', end='')
         num_guesses += 1
         guess = solver.guess()
-        score_right = input(f"I guess {''.join(guess)}")
-        score_almost_right = input()
+        score = input(f"I guess {''.join(guess)}. What is my score? ")
+        score_right, score_almost_right = (int(num) for num in score.split(','))
         if score_right == board.num_spots:
             print(f'I got it in {num_guesses} tries!')
             return
