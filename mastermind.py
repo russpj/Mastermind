@@ -208,8 +208,7 @@ def main(arguments):
 
     board = Board(num_colors, num_spots)
     if verbose:
-        print(f"The test score is {score_guess(['W', 'B', 'W', 'B'], ['R', 'W', 'B', 'P'])}")
-        print(f'The colors are {board.colors}')
+        print(f'The colors are {"".join(board.colors)}')
     if player == 'P':
         play_as_player(board, verbose)
     else:
