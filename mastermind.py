@@ -78,6 +78,17 @@ class Solver:
     def compute_valid_candidates(self):
         self.candidates = set()
         return
+
+    def guess(self):
+        if self.candidates:
+            guess_index = randint[0, len(self.candidates)-1]
+            return self.candidates[guess_index]
+        return None
+    
+    def remove_candidates(self, guess, score):
+        for candidate in self.candidates:
+            if  score_guess(guess, candidate) != score:
+                self.candidates.remove(candidate)
     
 
 def play_as_player(board, debug):
@@ -113,6 +124,25 @@ def play_as_player(board, debug):
     print(f"Congratulations. You solved it in {count_guess} guesses.")
 
     return
+
+
+def play_as_computer(board, debug):
+    solver = Solver(board)
+    num_guesses = 0
+    while solver.candidates:
+        if debug:
+            print(f'Out of {len(solver.candidates)} candidates ', end='')
+        num_guesses += 1
+        guess = solver.guess()
+        score_right = input(f"I guess {''.join(guess)}")
+        score_almost_right = input()
+        if score_right == board.num_spots:
+            print(f'I got it in {num_guesses} tries!')
+            return
+        solver.remove_candidates(guess, (score_right, score_almost_right))
+    print (f"I couldn't get it after {num_guesses} tries. It was too hard.")
+    return
+
 
 def main(arguments):
     program_name = app_name
@@ -164,6 +194,8 @@ def main(arguments):
         print(f'The colors are {board.colors}')
     if player == 'P':
         play_as_player(board, verbose)
+    else:
+        play_as_computer(board, verbose)
     time_end = process_time()
     print(f'Time taken: {time_end - time_start} seconds.')
 
