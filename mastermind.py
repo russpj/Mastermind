@@ -27,11 +27,15 @@ class Score:
         self.num_almost_right = num_almost_right
         return
 
+    def __str__(self):
+        return f'{self.num_right}, {self.num_almost_right}'
+    
     
 class Guess:
     def __init__(self, colors):
         self.colors = colors
         return
+
     
 def score_guess(guess, code):
     if len(guess) != len(code):
@@ -137,7 +141,7 @@ def play_as_player(board, debug):
                     print(f"{color} is not a valid color")
                     guess_is_valid = False
         score = score_guess(guess, board.code)
-        print(f"Guess: {''.join(guess)}, Score: {score.num_right}, {score.num_almost_right}")
+        print(f"Guess: {''.join(guess)}, Score: {score}")
         if score.num_right == board.num_spots:
             break
     print(f"Congratulations. You solved it in {count_guess} guesses.")
