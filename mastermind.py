@@ -52,7 +52,7 @@ def score_guess(guess, code):
                     num_almost_right += 1
                     spot_guess_used[guess_index] = True
                     spot_code_used[code_index] = True
-    return (num_right, num_almost_right)
+    return Score(num_right, num_almost_right)
 
 
 class Board:
@@ -124,9 +124,8 @@ def play_as_player(board, debug):
         print(f'The secret code is {code}')
     board.code = code
 
-    num_right = 0
     count_guess = 0
-    while num_right != board.num_spots:
+    while True:
         guess_is_valid = False
         while not guess_is_valid:
             guess_string = input("What is your guess? ")
@@ -137,8 +136,10 @@ def play_as_player(board, debug):
                 if color not in board.colors:
                     print(f"{color} is not a valid color")
                     guess_is_valid = False
-        num_right, num_almost_right = score_guess(guess, board.code)
-        print(f"Guess: {''.join(guess)}, Score: {num_right}, {num_almost_right}")
+        score = score_guess(guess, board.code)
+        print(f"Guess: {''.join(guess)}, Score: {score.num_right}, {score.num_almost_right}")
+        if score.num_right == board.num_spots:
+            break
     print(f"Congratulations. You solved it in {count_guess} guesses.")
 
     return
