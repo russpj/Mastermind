@@ -27,6 +27,18 @@ class Score:
         self.num_almost_right = num_almost_right
         return
 
+    def __ne__(self, other):
+        if not isinstance(other, self.__class__):
+            return True
+        elif self.num_right != other.num_right:
+            return True
+        elif self.num_almost_right != other.num_almost_right:
+            return True
+        return False
+    
+    def __eq__(self, other):
+        return not self.__ne__(other)
+
     def __str__(self):
         return f'{self.num_right}, {self.num_almost_right}'
     
@@ -107,13 +119,14 @@ class Solver:
     def remove_candidates(self, guess, score):
         removals = set()
         for candidate in self.candidates:
-            if  score_guess(guess, candidate) != score:
+            score_for_guess = score_guess(guess, candidate)
+            if  score_for_guess != score:
                 removals.add(candidate)
         for candidate in removals:
             self.candidates.remove(candidate)
     
 
-def play_as_player(board, debug):
+def play_as_setter(board, debug):
     print('How about a nice game of Mastermind?')
     print(f"I'm thinking of {board.num_spots} spots made up of {board.num_colors} colors.")
     print("You can use the letters ", end='')
@@ -149,7 +162,7 @@ def play_as_player(board, debug):
     return
 
 
-def play_as_computer(board, debug):
+def play_as_breaker(board, debug):
     solver = Solver(board)
     num_guesses = 0
     while solver.candidates:
@@ -162,7 +175,7 @@ def play_as_computer(board, debug):
         if score_right == board.num_spots:
             print(f'I got it in {num_guesses} tries!')
             return
-        solver.remove_candidates(guess, (score_right, score_almost_right))
+        solver.remove_candidates(guess, Score(score_right, score_almost_right))
     print (f"I couldn't get it after {num_guesses} tries. It was too hard.")
     return
 
@@ -215,9 +228,9 @@ def main(arguments):
     if verbose:
         print(f'The colors are {"".join(board.colors)}')
     if player == 'P':
-        play_as_player(board, verbose)
+        play_as_setter(board, verbose)
     else:
-        play_as_computer(board, verbose)
+        play_as_breaker(board, verbose)
     time_end = process_time()
     print(f'Time taken: {time_end - time_start} seconds.')
 
