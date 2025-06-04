@@ -44,8 +44,8 @@ class Score:
     
     
 class Guess:
-    def __init__(self, colors):
-        self.colors = colors
+    def __init__(self, colors, indices):
+        self.colors = tuple([colors[i] for i in indices])
         return
 
     
@@ -89,7 +89,8 @@ class Board:
         num_colors = self.num_colors
         indices = [0]*num_spots
         while True:
-            yield tuple([self.colors[indices[i]] for i in range(num_spots)])
+            guess = Guess(self.colors, indices)
+            yield guess.colors
             for index_position in [num_spots-i-1 for i in range(num_spots)]:
                 indices[index_position] += 1
                 if indices[index_position] < num_colors:
