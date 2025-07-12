@@ -174,12 +174,18 @@ def play_as_breaker(board, debug):
             print(f'Out of {len(solver.candidates)} candidates ', end='')
         num_guesses += 1
         guess = solver.guess()
-        score = input(f"I guess {''.join(guess)}. What is my score? ")
-        score_right, score_almost_right = (int(num) for num in score.split(','))
-        if score_right == board.num_spots:
+        if board.answer:
+            print(f"I guess {' '.join(guess)}")
+            score = score_guess(guess, board.answer)
+            print(f"My score is: {score.num_right}, {score.num_almost_right}")
+        else:
+            score = input(f"I guess {''.join(guess)}. What is my score? ")
+            score_right, score_almost_right = (int(num) for num in score.split(','))
+            score = Score(score_right, score_almost_right)
+        if score.num_right == board.num_spots:
             print(f'I got it in {num_guesses} tries!')
             return
-        solver.remove_candidates(guess, Score(score_right, score_almost_right))
+        solver.remove_candidates(guess, score)
     print (f"I couldn't get it after {num_guesses} tries. It was too hard.")
     return
 
