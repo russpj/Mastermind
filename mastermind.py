@@ -136,8 +136,11 @@ def play_as_setter(board, debug):
     print(" for your guesses.")
 
     code = []
-    for _ in range(board.num_spots):
-        code.append(board.colors[randint(0,board.num_colors-1)])
+    if board.answer:
+        code = board.answer
+    else:
+        for _ in range(board.num_spots):
+            code.append(board.colors[randint(0,board.num_colors-1)])
     if debug:
         print(f'The secret code is {code}')
     board.code = code
@@ -218,7 +221,7 @@ def main(arguments):
         if opt in ('-s', '--spots'):
             num_spots = int(arg)
 
-        if opt in ('-s', '--answer'):
+        if opt in ('-a', '--answer'):
             answer = arg
 
     time_start = process_time()
