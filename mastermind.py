@@ -192,7 +192,7 @@ def main(arguments):
     sections = []
 
     try:
-        opts, args = getopt(arguments, "hvp:c:d:", 
+        opts, args = getopt(arguments, "hvp:c:s:", 
                             ("help", "verbose", "player=", "colors=", "spots="))
     except GetoptError:
         print(f'Invalid Arguments: {command_line_documentation}')
@@ -215,7 +215,7 @@ def main(arguments):
             if num_colors > 26:
                 num_colors = 26
 
-        if opt in ('-d', '--spots'):
+        if opt in ('-s', '--spots'):
             num_spots = int(arg)
 
     if input_file_name:
