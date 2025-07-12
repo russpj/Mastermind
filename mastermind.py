@@ -188,11 +188,12 @@ def main(arguments):
     player = 'P'
     num_colors = 6
     num_spots = 4
+    answer = ""
     sections = []
 
     try:
-        opts, args = getopt(arguments, "hvp:c:s:", 
-                            ("help", "verbose", "player=", "colors=", "spots="))
+        opts, args = getopt(arguments, "hvp:c:s:a:", 
+                            ("help", "verbose", "player=", "colors=", "spots=", "answer="))
     except GetoptError:
         print(f'Invalid Arguments: {command_line_documentation}')
         exit(2)
@@ -216,6 +217,9 @@ def main(arguments):
 
         if opt in ('-s', '--spots'):
             num_spots = int(arg)
+
+        if opt in ('-s', '--answer'):
+            answer = arg
 
     time_start = process_time()
     print(f'{player} will play with {num_spots} spots of {num_colors} colors.')
