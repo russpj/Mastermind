@@ -125,6 +125,9 @@ class Solver:
                 removals.add(candidate)
         for candidate in removals:
             self.candidates.remove(candidate)
+
+    def print_candidates(self, limit):
+        print(f"There are {len(self.candidates)} valid candidates.")
     
 
 def play_as_setter(board, debug):
@@ -171,7 +174,7 @@ def play_as_breaker(board, debug):
     num_guesses = 0
     while solver.candidates:
         if debug:
-            print(f'Out of {len(solver.candidates)} candidates ', end='')
+            solver.print_candidates(100)
         num_guesses += 1
         guess = solver.guess()
         if board.answer:
