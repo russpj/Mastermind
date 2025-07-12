@@ -72,7 +72,7 @@ def score_guess(guess, code):
 
 
 class Board:
-    def __init__(self, num_colors, num_spots):
+    def __init__(self, num_colors, num_spots, answer):
         self.num_colors = num_colors
         self.num_spots = num_spots
         self.guesses = []
@@ -82,6 +82,7 @@ class Board:
             self.colors = standard_colors[:num_colors]
         else:
             self.colors = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")[:num_colors]
+        self.answer = answer
         return
 
     def codes(self):
@@ -100,7 +101,6 @@ class Board:
                 return
 
     
-
 class Solver:
     def __init__(self, board):
         self.board = board
@@ -224,7 +224,7 @@ def main(arguments):
     time_start = process_time()
     print(f'{player} will play with {num_spots} spots of {num_colors} colors.')
 
-    board = Board(num_colors, num_spots)
+    board = Board(num_colors, num_spots, answer)
     if verbose:
         print(f'The colors are {"".join(board.colors)}')
     if player == 'P':
