@@ -146,12 +146,15 @@ def play_as_setter(board, debug):
             code.append(board.colors[randint(0,board.num_colors-1)])
     if debug:
         print(f'The secret code is {code}')
+        solver = Solver(board)
     board.code = code
 
     count_guess = 0
     while True:
         guess_is_valid = False
         while not guess_is_valid:
+            if debug:
+                solver.print_candidates(100)
             guess_string = input("What is your guess? ")
             guess = list(guess_string.upper())
             count_guess += 1
@@ -164,6 +167,8 @@ def play_as_setter(board, debug):
         print(f"Guess: {''.join(guess)}, Score: {score}")
         if score.num_right == board.num_spots:
             break
+        if debug:
+            solver.remove_candidates(guess, score)
     print(f"Congratulations. You solved it in {count_guess} guesses.")
 
     return
