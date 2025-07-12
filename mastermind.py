@@ -197,8 +197,6 @@ def main(arguments):
     try:
         opts, args = getopt(arguments, "hvp:c:s:a:", 
                             ("help", "verbose", "player=", "colors=", "spots=", "answer="))
-        opts, args = getopt(arguments, "hvp:c:s:a:", 
-                            ("help", "verbose", "player=", "colors=", "spots=", "answer="))
     except GetoptError:
         print(f'Invalid Arguments: {command_line_documentation}')
         exit(2)
