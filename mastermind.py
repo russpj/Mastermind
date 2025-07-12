@@ -188,7 +188,6 @@ def main(arguments):
     player = 'P'
     num_colors = 6
     num_spots = 4
-    input_file_name = ''
     sections = []
 
     try:
@@ -217,10 +216,6 @@ def main(arguments):
 
         if opt in ('-s', '--spots'):
             num_spots = int(arg)
-
-    if input_file_name:
-        with open(input_file_name, 'r') as input_file:
-            print(f'Opened {input_file_name} for {app_name}')
 
     time_start = process_time()
     print(f'{player} will play with {num_spots} spots of {num_colors} colors.')
