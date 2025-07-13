@@ -92,7 +92,7 @@ class Board:
         while True:
             guess = Guess(self.colors, indices)
             yield guess.colors
-            for index_position in [num_spots-i-1 for i in range(num_spots)]:
+            for index_position in reversed(range(num_spots)):
                 indices[index_position] += 1
                 if indices[index_position] < num_colors:
                     break
@@ -151,18 +151,18 @@ def play_as_setter(board, debug):
 
     count_guess = 0
     while True:
+        if debug:
+            solver.print_candidates(100)
         guess_is_valid = False
         while not guess_is_valid:
-            if debug:
-                solver.print_candidates(100)
             guess_string = input("What is your guess? ")
             guess = list(guess_string.upper())
-            count_guess += 1
             guess_is_valid = True
             for color in guess:
                 if color not in board.colors:
                     print(f"{color} is not a valid color")
                     guess_is_valid = False
+        count_guess += 1
         score = score_guess(guess, board.code)
         print(f"Guess: {''.join(guess)}, Score: {score}")
         if score.num_right == board.num_spots:
