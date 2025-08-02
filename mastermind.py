@@ -164,6 +164,12 @@ def play_as_setter(board, debug):
                     guess_is_valid = False
         count_guess += 1
         score = score_guess(guess, board.code)
+        if debug:
+            if tuple(guess) not in solver.candidates:
+                good_guess = " not"
+            else:
+                good_guess = ""
+            print(f"The guess is{good_guess} a possible solution")
         print(f"Guess: {''.join(guess)}, Score: {score}")
         if score.num_right == board.num_spots:
             break
