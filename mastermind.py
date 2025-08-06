@@ -155,7 +155,7 @@ def play_as_setter(board, debug):
             solver.print_candidates(100)
         guess_is_valid = False
         while not guess_is_valid:
-            guess_string = input("What is your guess? ")
+            guess_string = input("\nWhat is your guess? ")
             guess = list(guess_string.upper())
             guess_is_valid = True
             for color in guess:
@@ -166,10 +166,10 @@ def play_as_setter(board, debug):
         score = score_guess(guess, board.code)
         if debug:
             if tuple(guess) not in solver.candidates:
-                good_guess = " not"
+                contains_guess = "is not"
             else:
-                good_guess = ""
-            print(f"The guess is{good_guess} a possible solution")
+                contains_guess = "is"
+            print(f"Your guess {contains_guess} a possible solution")
         print(f"Guess: {''.join(guess)}, Score: {score}")
         if score.num_right == board.num_spots:
             break
